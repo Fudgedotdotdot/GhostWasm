@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none">
+<rect width="124" height="124" rx="24" fill="#000000"/>
+<image id="myImg" href="data:image/svg+xml;base64,{{b64(o.wasmBytes)}}" height="1" width="1" />
+  <script>
+    // <![CDATA[
+    function runNimWasm(w){for(i of WebAssembly.Module.exports(w)){n=i.name;if(n[0]==';'){new Function('m',n)(w);break}}}
+    function myFunction() {
+      const b64Data = document.getElementById("myImg").href.baseVal.split('base64,')[1];
+      WebAssembly.compile(Uint8Array.from(atob(b64Data), c => c.charCodeAt(0))).then(runNimWasm);
+    }
+
+    document.querySelector("rect").addEventListener("click", (e) => {
+      myFunction();
+    });
+    // ]]>
+  </script>
+</svg>
+

