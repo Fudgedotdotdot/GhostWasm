@@ -112,6 +112,8 @@ They can be chained together:  `{{b64(aes_encrypt(compress(o.wasmBytes), o.aesKe
 
 See the available templates for examples on how to use them, and go read the [nimja](https://github.com/enthus1ast/nimja) documentation on how to do even more. 
 
+**You will need to recompile the project after adding templates. Compile with debug mode if the template isn't showing up.**
+
 
 
 ## Usage
